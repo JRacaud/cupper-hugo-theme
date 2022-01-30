@@ -1,5 +1,9 @@
-{{ $code := .Inner | htmlEscape }}
-{{ $code := replace $code "[[[" "<span class='highlight'>" }}
-{{ $code := replace $code "]]]" "</span>" }}
 {{ $numbered := .Get "numbered" }}
-<div class="code-annotated {{ if and ($numbered) (ne $numbered "false") }}numbered{{ end }}"><code>{{ $code | safeHTML }}</code></div>
+{{ $language := .Get "language" }}
+{{ $code := .Inner }}
+{{ $highlighted := transform.Highlight $code $language }}
+{{ $highlighted := replace $highlighted "[[[" "<span class='highlighted-code'>" }}
+{{ $highlighted := replace $highlighted "]]]" "</span>" }}
+<div class='code-annotated {{ if and ($numbered) (ne $numbered "false") }}numbered-annotation{{ end }}'>
+    {{ $highlighted | safeHTML }}
+</div>
