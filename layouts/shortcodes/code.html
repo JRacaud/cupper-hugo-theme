@@ -1,8 +1,15 @@
+{{ $code := .Inner }}
 {{ $numbered := .Get "numbered" }}
 {{ $language := .Get "language" }}
-{{ $code := .Inner }}
+{{ $colored := .Get "colored" }}
+{{ $spanClass := "<span class='highlighted-code'>" }}
+
+{{ if (ne $colored "true") }} 
+    {{ $spanClass := "<span class='highlighted'>" }}
+{{ end }}
+
 {{ $highlighted := transform.Highlight $code $language }}
-{{ $highlighted := replace $highlighted "[[[" "<span class='highlighted-code'>" }}
+{{ $highlighted := replace $highlighted "[[[" $spanClass }}
 {{ $highlighted := replace $highlighted "]]]" "</span>" }}
 <div class='code-annotated {{ if and ($numbered) (ne $numbered "false") }}numbered-annotation{{ end }}'>
     {{ $highlighted | safeHTML }}
